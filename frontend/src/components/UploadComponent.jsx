@@ -37,16 +37,16 @@ export default function UploadComponent({ owner, onUpload, onError }) {
   }
 
   return (
-    <form className="upload-form" onSubmit={handleSubmit}>
-      <label className="dropzone" htmlFor="document-file">
-        <span className="dropzone__symbol" aria-hidden="true">+</span>
+    <form onSubmit={handleSubmit}>
+      <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center gap-1 border-2 border-dashed border-moss bg-mist p-6 text-center transition hover:bg-[#d0e0d3] focus-within:ring-2 focus-within:ring-sunflower" htmlFor="document-file">
+        <span className="font-display text-4xl leading-none text-signal" aria-hidden="true">+</span>
         <span>Escolha um documento</span>
-        <small>Qualquer formato, até 100 MB</small>
-        <input ref={inputRef} id="document-file" type="file" onChange={selectFile} />
+        <small className="text-xs text-moss">Qualquer formato, até 100 MB</small>
+        <input className="sr-only" ref={inputRef} id="document-file" type="file" onChange={selectFile} />
       </label>
-      <div className="upload-form__actions">
-        <span className="file-name">{selectedFile?.name || 'Nenhum arquivo selecionado'}</span>
-        <button type="submit" disabled={!owner.trim() || isUploading}>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-xs text-moss">{selectedFile?.name || 'Nenhum arquivo selecionado'}</span>
+        <button className="rounded-sm border border-ink bg-ink px-4 py-2.5 text-sm text-white transition hover:border-signal hover:bg-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal disabled:cursor-not-allowed disabled:opacity-50" type="submit" disabled={!owner.trim() || isUploading}>
           {isUploading ? 'Enviando...' : 'Enviar documento'}
         </button>
       </div>
