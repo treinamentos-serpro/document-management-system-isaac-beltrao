@@ -1,12 +1,12 @@
 const { randomUUID } = require('node:crypto');
 
-class DocumentService {
-  constructor(documentRepository) {
-    this.documentRepository = documentRepository;
+class DocumentsService {
+  constructor(documentsRepository) {
+    this.documentsRepository = documentsRepository;
   }
 
   createDocument(file, owner) {
-    return this.documentRepository.create({
+    return this.documentsRepository.create({
       id: randomUUID(),
       originalName: file.originalname,
       size: file.size,
@@ -19,11 +19,11 @@ class DocumentService {
   }
 
   listDocuments(owner) {
-    return this.documentRepository.findByOwner(owner).map(this.toPublicMetadata);
+    return this.documentsRepository.findByOwner(owner).map(this.toPublicMetadata);
   }
 
   async getDownload(id, owner) {
-    const document = this.documentRepository.findByIdAndOwner(id, owner);
+    const document = this.documentsRepository.findByIdAndOwner(id, owner);
 
     if (!document) {
       return null;
@@ -31,7 +31,7 @@ class DocumentService {
 
     return {
       document,
-      content: await this.documentRepository.readFile(document),
+      content: await this.documentsRepository.readFile(document),
     };
   }
 
@@ -41,4 +41,4 @@ class DocumentService {
   }
 }
 
-module.exports = DocumentService;
+module.exports = DocumentsService;

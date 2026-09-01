@@ -2,9 +2,9 @@ const path = require('node:path');
 const fs = require('node:fs');
 const express = require('express');
 const multer = require('multer');
-const DocumentRepository = require('../repositories/documentRepository');
-const DocumentService = require('../services/documentService');
-const DocumentController = require('../controllers/documentController');
+const DocumentsRepository = require('../repositories/documents.repository');
+const DocumentsService = require('../services/documents.service');
+const DocumentsController = require('../controllers/documents.controller');
 
 const storagePath = process.env.STORAGE_PATH || path.resolve(__dirname, '../../storage');
 fs.mkdirSync(storagePath, { recursive: true });
@@ -19,13 +19,13 @@ const upload = multer({
   limits: { fileSize: 100 * 1024 * 1024 },
 });
 
-const documentRepository = new DocumentRepository();
-const documentService = new DocumentService(documentRepository);
-const documentController = new DocumentController(documentService);
+const documentsRepository = new DocumentsRepository();
+const documentsService = new DocumentsService(documentsRepository);
+const documentsController = new DocumentsController(documentsService);
 const router = express.Router();
 
-router.post('/upload', upload.single('file'), documentController.create);
-router.get('/documents', documentController.list);
-router.get('/documents/:id/download', documentController.download);
+router.post('/upload', upload.single('file'), documentsController.create);
+router.get('/documents', documentsController.list);
+router.get('/documents/:id/download', documentsController.download);
 
 module.exports = router;

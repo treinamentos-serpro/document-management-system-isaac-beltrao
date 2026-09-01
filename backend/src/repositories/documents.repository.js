@@ -1,6 +1,6 @@
 const fs = require('node:fs/promises');
 
-class DocumentRepository {
+class DocumentsRepository {
   constructor() {
     this.documents = [];
   }
@@ -23,4 +23,4 @@ class DocumentRepository {
   }
 }
 
-module.exports = DocumentRepository;
+module.exports = DocumentsRepository;

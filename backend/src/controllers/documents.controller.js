@@ -1,6 +1,6 @@
-class DocumentController {
-  constructor(documentService) {
-    this.documentService = documentService;
+class DocumentsController {
+  constructor(documentsService) {
+    this.documentsService = documentsService;
   }
 
   create = (req, res) => {
@@ -17,15 +17,15 @@ class DocumentController {
       return;
     }
 
-    const document = this.documentService.createDocument(req.file, owner);
-    res.status(201).json(this.documentService.toPublicMetadata(document));
+    const document = this.documentsService.createDocument(req.file, owner);
+    res.status(201).json(this.documentsService.toPublicMetadata(document));
   };
 
   list = (req, res) => {
     const owner = this.getOwner(req, res);
     if (!owner) return;
 
-    res.json(this.documentService.listDocuments(owner));
+    res.json(this.documentsService.listDocuments(owner));
   };
 
   download = async (req, res, next) => {
@@ -33,7 +33,7 @@ class DocumentController {
     if (!owner) return;
 
     try {
-      const download = await this.documentService.getDownload(req.params.id, owner);
+      const download = await this.documentsService.getDownload(req.params.id, owner);
 
       if (!download) {
         res.status(404).json({
@@ -68,4 +68,4 @@ class DocumentController {
   }
 }
 
-module.exports = DocumentController;
+module.exports = DocumentsController;
