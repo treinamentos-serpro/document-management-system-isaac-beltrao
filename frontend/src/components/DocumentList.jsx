@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { downloadDocument } from '../services/documentService.js';
+import DownloadButton from './DownloadButton.jsx';
 
 function formatFileSize(bytes) {
   if (bytes < 1024) return `${bytes} B`;
@@ -8,20 +7,6 @@ function formatFileSize(bytes) {
 }
 
 export default function DocumentList({ documents, owner, onError }) {
-  const [downloadingId, setDownloadingId] = useState(null);
-
-  async function handleDownload(document) {
-    setDownloadingId(document.id);
-    onError('');
-    try {
-      await downloadDocument(document.id, document.originalName, owner);
-    } catch (error) {
-      onError(error.message);
-    } finally {
-      setDownloadingId(null);
-    }
-  }
-
   if (documents.length === 0) {
     return <p className="empty-state">Nenhum documento disponível para este usuário.</p>;
   }
@@ -35,15 +20,7 @@ export default function DocumentList({ documents, owner, onError }) {
             <strong>{document.originalName}</strong>
             <span>{formatFileSize(document.size)} · {new Date(document.uploadedAt).toLocaleString('pt-BR')}</span>
           </div>
-          <button
-            className="download-button"
-            type="button"
-            aria-label={`Baixar ${document.originalName}`}
-            disabled={downloadingId === document.id}
-            onClick={() => handleDownload(document)}
-          >
-            {downloadingId === document.id ? '...' : 'Baixar'}
-          </button>
+          <DownloadButton document={document} owner={owner} onError={onError} />
         </article>
       ))}
     </div>
