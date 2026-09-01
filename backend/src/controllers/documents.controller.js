@@ -18,7 +18,7 @@ class DocumentsController {
     }
 
     const document = this.documentsService.createDocument(req.file, owner);
-    res.status(201).json(this.documentsService.toPublicMetadata(document));
+    res.status(201).json(document);
   };
 
   list = (req, res) => {

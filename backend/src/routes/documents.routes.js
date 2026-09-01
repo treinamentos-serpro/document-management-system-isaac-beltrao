@@ -4,6 +4,7 @@ const express = require('express');
 const multer = require('multer');
 const DocumentsRepository = require('../repositories/documents.repository');
 const DocumentsService = require('../services/documents.service');
+const DocumentMetadataService = require('../services/document-metadata.service');
 const DocumentsController = require('../controllers/documents.controller');
 
 const storagePath = process.env.STORAGE_PATH || path.resolve(__dirname, '../../storage');
@@ -20,7 +21,8 @@ const upload = multer({
 });
 
 const documentsRepository = new DocumentsRepository();
-const documentsService = new DocumentsService(documentsRepository);
+const documentMetadataService = new DocumentMetadataService();
+const documentsService = new DocumentsService(documentsRepository, documentMetadataService);
 const documentsController = new DocumentsController(documentsService);
 const router = express.Router();
 
